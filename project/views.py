@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import Task, Todo
+from .models import Task, Todo, Team, Worker
 from django.db import models
 # Create your views here.
 
@@ -35,6 +35,28 @@ def seedTasks():
     coffee_todo1.save()
     coffee_todo2.save()
     coffee_todo3.save()
+
+
+def seedWorkers():
+    frontend_team = Team.objects.create(name="Frontend")
+    backend_team = Team.objects.create(name="Backend")
+    testing_team = Team.objects.create(name="Testing")
+
+    w1 = Worker.objects.create(name="Steen Secher")
+    w2 = Worker.objects.create(name="Ejvind Møller")
+    w3 = Worker.objects.create(name="Konrad Sommer")
+    w4 = Worker.objects.create(name="Sofus Lotus")
+    w5 = Worker.objects.create(name="Remo Lademann")
+    w6 = Worker.objects.create(name="Ella Fanth")
+    w7 = Worker.objects.create(name="Anne Dam")
+    
+
+    frontend_team.workers.add(w1, w2, w3)
+    backend_team.workers.add(w3,w4,w5)
+    testing_team.workers.add(w6,w7,w1)
+
+
+
 
 
 def printIncompleteTasksAndTodos():

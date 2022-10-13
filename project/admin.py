@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Task, Todo
+from .models import Task, Todo, Worker, Team
 # Register your models here.
 
 class TodoInline(admin.TabularInline):
@@ -16,3 +16,14 @@ class TodoAdmin(admin.ModelAdmin):
     model = Todo
 
 admin.site.register(Todo, TodoAdmin)
+
+class WorkerAdmin(admin.ModelAdmin):
+    model = Worker
+
+admin.site.register(Worker, WorkerAdmin)
+
+class TeamAdmin(admin.ModelAdmin):
+    model = Team
+    filter_horizontal = ("workers",)
+
+admin.site.register(Team, TeamAdmin)
