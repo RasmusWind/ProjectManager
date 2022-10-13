@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from .models import Task, Todo
+from django.db import models
 # Create your views here.
 
 def seedTasks():
@@ -34,3 +35,14 @@ def seedTasks():
     coffee_todo1.save()
     coffee_todo2.save()
     coffee_todo3.save()
+
+
+def printIncompleteTasksAndTodos():
+    # Jeg filtrere alle tasks for at få dem som indeholder en todo som er incomplete.
+    # Jeg prefetcher også alle dens relaterede objekter todos, for at undgå at skulle lave flere queries.
+    tasks = Task.objects.filter(todos__complete=False).distinct().prefetch_related(models.Prefetch("todos", to_attr="pre_todos"))
+
+    for task in tasks:
+        print(task.name)
+        for todo in task.pre_todos:
+            print(f"\t{todo.title}")
