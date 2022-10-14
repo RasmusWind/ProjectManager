@@ -68,3 +68,8 @@ def printIncompleteTasksAndTodos():
         print(task.name)
         for todo in task.pre_todos:
             print(f"\t{todo.title}")
+
+
+def printTeamsWithoutTasks():
+    teams = Team.objects.filter(current_task=None)
+    return teams
