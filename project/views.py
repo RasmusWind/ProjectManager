@@ -73,3 +73,8 @@ def printIncompleteTasksAndTodos():
 def printTeamsWithoutTasks():
     teams = Team.objects.filter(current_task=None)
     return teams
+
+def printTeamsAndTasks():
+    teams = Team.objects.all().select_related("current_taks")
+    for team in teams:
+        print(f"{team.name}\t{team.current_task}")
