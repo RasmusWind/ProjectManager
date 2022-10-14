@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from .models import Task, Todo, Team, Worker
 from django.db import models
+from django.db.models import Count, Q
 # Create your views here.
 
 def seedTasks():
@@ -78,3 +79,14 @@ def printTeamsAndTasks():
     teams = Team.objects.all().select_related("current_taks")
     for team in teams:
         print(f"{team.name}\t{team.current_task}")
+
+def printTeamsAndTodos():
+    teams = Team.objects.all().select_related("current_task").prefetch_related(models.Prefetch("current_task__todos", to_attr="pre_todos"))\
+        .annotate(
+            complete=Count("current_task__todos", filter=Q(current_task__todos__complete=True)),
+            total_todos=Count("current_task__todos")
+
+        )
+    
+    for team in teams:
+        print(f"{team.name}\t{round(team.complete/team.total_todos*100)}%")
