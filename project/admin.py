@@ -22,8 +22,12 @@ class WorkerAdmin(admin.ModelAdmin):
 
 admin.site.register(Worker, WorkerAdmin)
 
+class TaskInline(admin.TabularInline):
+    model = Task
+
 class TeamAdmin(admin.ModelAdmin):
     model = Team
     filter_horizontal = ("workers",)
+    inlines = [TaskInline]
 
 admin.site.register(Team, TeamAdmin)

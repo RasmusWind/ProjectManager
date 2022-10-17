@@ -4,6 +4,7 @@ from django.db import models
 
 class Task(models.Model):
     name = models.CharField(max_length=200, blank=False)
+    team = models.ForeignKey("Team", null=True, related_name="tasks", on_delete=models.SET_NULL)
 
     def __str__(self):
         return self.name
@@ -33,3 +34,8 @@ class Worker(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Run(models.Model):
+    name = models.CharField(max_length=255, blank=True, null=True)
+    task = models.ForeignKey(Task, related_name="runs", blank=True, null=True, on_delete=models.CASCADE)

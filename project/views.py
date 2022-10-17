@@ -91,3 +91,15 @@ def printTeamsAndTodos():
     
     for team in teams:
         print(f"{team.name}\t{team.final}%")
+
+
+def printTeamsAndTodos2():
+    teams = Team.objects.all().select_related("current_task").prefetch_related(models.Prefetch("tasks", to_attr="pre_tasks"))\
+        .annotate(
+            complete=Count("tasks__todos", filter=Q(tasks__todos__complete=True)),
+            total_todos=Count("tasks__todos"),
+            final=Round(Coalesce(100.0*F("complete")/F("total_todos"), 0, output_field=models.FloatField()), precision=2)
+        )
+    
+    for team in teams:
+        print(f"{team.name}\t{team.complete}\t{team.total_todos}\t{team.final}%")
